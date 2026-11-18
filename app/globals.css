@@ -1,26 +1,125 @@
 @import "tailwindcss";
 
+/* ────────────────────────────────────────────────
+   設計系統：紙張 × 墨色 × 朱紅印章
+   顏色都定義成 CSS 變數，深色模式只要換變數值
+   ──────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --paper: #f5f1e8;
+  --surface: #fffdf8;
+  --surface-2: #efeadf;
+  --ink: #1a1915;
+  --ink-soft: #3d3a33;
+  --muted: #736d62;
+  --line: #e2dccf;
+  --line-strong: #cfc7b6;
+  --seal: #b23a2b;
+  --seal-strong: #962c1f;
+  --seal-soft: #f4e2dc;
+  --risk-low: #3d7356;
+  --risk-low-soft: #e1ede4;
+  --risk-mid: #a46a12;
+  --risk-mid-soft: #f5e9d2;
+  --risk-high: #b23a2b;
+  --risk-high-soft: #f4e2dc;
+  --on-ink: #f5f1e8;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --paper: #121210;
+    --surface: #1a1a17;
+    --surface-2: #22221e;
+    --ink: #ede8dc;
+    --ink-soft: #cdc7b9;
+    --muted: #958f82;
+    --line: #2d2c27;
+    --line-strong: #3d3b34;
+    --seal: #e0614f;
+    --seal-strong: #ec7a69;
+    --seal-soft: #3a201b;
+    --risk-low: #7cb894;
+    --risk-low-soft: #1d2b22;
+    --risk-mid: #dda552;
+    --risk-mid-soft: #2f2615;
+    --risk-high: #e0614f;
+    --risk-high-soft: #3a201b;
+    --on-ink: #121210;
   }
 }
 
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-seal: var(--seal);
+  --color-seal-strong: var(--seal-strong);
+  --color-seal-soft: var(--seal-soft);
+  --color-risk-low: var(--risk-low);
+  --color-risk-low-soft: var(--risk-low-soft);
+  --color-risk-mid: var(--risk-mid);
+  --color-risk-mid-soft: var(--risk-mid-soft);
+  --color-risk-high: var(--risk-high);
+  --color-risk-high-soft: var(--risk-high-soft);
+  --color-on-ink: var(--on-ink);
+
+  --font-sans: var(--font-geist-sans), var(--font-noto-sans), "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --font-serif: var(--font-noto-serif), "Songti TC", "PMingLiU", serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --animate-rise: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-stamp: stamp 0.6s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes stamp {
+  0% { opacity: 0; transform: scale(1.6) rotate(-14deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-8deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "palt";
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--seal);
+  color: var(--surface);
+}
+
+/* 紙張質感的細格線背景 */
+.paper-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--ink) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--ink) 5%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* 文件上的螢光筆標記 */
+.mark-risk {
+  background: linear-gradient(transparent 55%, color-mix(in oklab, var(--seal) 28%, transparent) 55%);
+  padding: 0 2px;
 }
